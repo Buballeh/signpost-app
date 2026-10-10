@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
 
+# Cancel superseded runs on the same ref to avoid repeating expensive CI jobs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Placeholder envs for `npm run build` (only `npm run build` actually reads
 # these — the rest of the steps in every job are happy to ignore them).
 # Hoisted to workflow-level so the two build steps in `lint` + `build` jobs
